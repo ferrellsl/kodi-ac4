@@ -31,6 +31,14 @@ replaces an existing Kodi 21 installation; your settings and library are kept.
   specification requires. Fixed. (The decoder now outputs 46034 Hz for ATSC
   3.0, which Kodi resamples like any other audio.)
 - **Polarity.** All channels came out inverted; fixed.
+- **An AC-4 badge.** Kodi's skin (Estuary) showed a question mark where the
+  Dolby logo appears for Dolby Digital; it now shows "AC-4". Other skins have
+  their own badges: for one that looks codec badges up as
+  `flags/audiocodec/<codec>.png` (Estuary MOD V2 and others), copy
+  `skin/estuary-modv2/ac4.png` (a bolder badge) or `skin/ac4.png` into the
+  skin's `media\flags\audiocodec` folder (for an installed skin, under
+  `%APPDATA%\Kodi\addons\<skin>\`) and restart Kodi. A skin update may remove
+  it again.
 
 How it was checked: Dolby's AC-4 Online Delivery Kit has the same program as
 AC-4 5.1 and as Dolby Digital Plus 5.1. Against the DD+ decode, the AC-4 decode
@@ -81,6 +89,7 @@ and NSIS. Use a folder with no spaces in its path.
 ```
 git clone --depth 1 --branch 21.3-Omega https://github.com/xbmc/xbmc C:\Kodi-AC4\kodi
 copy patches\0006-ffmpeg-ac4-decoder.patch C:\Kodi-AC4\kodi\tools\buildsteps\windows\patches\
+copy skin\ac4.png C:\Kodi-AC4\kodi\addons\skin.estuary\media\flags\audiocodec\
 cd C:\Kodi-AC4\kodi\tools\buildsteps\windows\x64
 download-dependencies.bat
 download-msys2.bat
@@ -100,6 +109,10 @@ build scripts change, and unpacks FFmpeg only once. Delete
 `project\BuildDependencies\build\src\ffmpeg-6.0.1` and
 `project\BuildDependencies\mingwlibs\x64\.last_success_revision` first, then run
 `make-mingwlibs.bat` and `BuildSetup.bat` again.
+
+`skin/ac4.png` is the skin's AC-4 codec badge, made by `skin/make_ac4_flag.py`
+from the skin's AAC badge, with Noto Sans (SIL Open Font License);
+`skin/estuary-modv2/ac4.png`, the bolder one, by `skin/make_ac4_flag_bold.py`.
 
 `kodi-step.bat` runs one of those steps (for example
 `kodi-step.bat make-mingwlibs.bat`) from any shell. It's only needed where the
