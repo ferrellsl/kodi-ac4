@@ -12,42 +12,51 @@ replaces an existing Kodi 21 installation; your settings and library are kept.
 
 - AC-4 in MPEG-TS (ATSC 3.0 recordings and live TV, for example from an
   HDHomeRun), in MP4, and raw `.ac4` files.
-- Mono, stereo, 5.1 and 7.1 AC-4. Tested on 5.1 and stereo ATSC 3.0
-  broadcasts recorded from an HDHomeRun.
+- Mono, stereo and 5.1 AC-4, including 5.1 with parametric surrounds (A-CPL)
+  and the high-frequency extension (A-SPX), as ATSC 3.0 broadcasters send it.
+- Tested on stereo and 5.1 ATSC 3.0 broadcasts recorded from an HDHomeRun, and
+  checked against Dolby's own decode of its test material (below).
 
-## The channel fix
+## New in the second release (v21.3-ac4.2)
+
+- **5.1 surrounds.** Much 5.1 on ATSC 3.0 is sent as left, right, center and
+  LFE, the surrounds described by parameters for the decoder to rebuild
+  (A-CPL). Earlier builds left the surrounds silent, and played the fronts
+  about 6 dB too quietly, which made such 5.1 sound center-heavy, almost mono.
+  The surrounds are now rebuilt as the AC-4 specification describes.
+- **Full bandwidth in 5.1.** 5.1 stopped at about 14 kHz (the high-frequency
+  extension, A-SPX, was applied to stereo only); it now has its top end.
+- **Speed and pitch.** All earlier AC-4 builds played ATSC 3.0 audio about 4 %
+  fast and 0.7 semitone sharp: the decoder skipped a resampling step the
+  specification requires. Fixed. (The decoder now outputs 46034 Hz for ATSC
+  3.0, which Kodi resamples like any other audio.)
+- **Polarity.** All channels came out inverted; fixed.
+
+How it was checked: Dolby's AC-4 Online Delivery Kit has the same program as
+AC-4 5.1 and as Dolby Digital Plus 5.1. Against the DD+ decode, the AC-4 decode
+now correlates 1.00 on the center channel, 0.91-0.96 on the fronts and LFE, and
+0.64-0.70 on the rebuilt surrounds, with the same balance between channels;
+the kit's channel-identification signal matches channel by channel, second by
+second, within 1-2 dB.
+
+## The channel fix (first release)
 
 Earlier AC-4 builds of Kodi put the 5.1 and 7.1 channels in the wrong order:
 the LFE (subwoofer) channel came out of the right surround speaker, and the
-subwoofer got a surround channel. The decoder kept the LFE after the main
-channels, where FFmpeg and Kodi expect it fourth (front left, front right,
-center, LFE, surrounds). This build reorders the output, so the LFE goes to the
-subwoofer. This was checked on 5.1 ATSC 3.0 broadcasts: the LFE is output
-channel 4.
+subwoofer got a surround channel. The decoder now puts the LFE fourth, where
+FFmpeg and Kodi expect it (front left, front right, center, LFE, surrounds).
 
-## Other changes from earlier AC-4 builds
-
-- **Immersive AC-4 no longer crashes Kodi.** Streams using immersive audio
-  (IMS, A-JOC / Atmos) made the decoder write past its buffers and crash. Those
-  frames are now rejected as invalid data instead. Immersive AC-4 is still not
-  supported, but playback no longer brings Kodi down.
-- **No phantom audio track.** ATSC 3.0 broadcasts carry a subtitle stream
-  (STPP) that was listed as an extra AC-4 audio track with 0 channels; it is
-  now treated as data.
-- Based on Kodi 21.3 and its FFmpeg 6.0.1 (earlier builds were Kodi 19/20 on
-  FFmpeg 4.3).
+Also since the first release: **immersive AC-4 no longer crashes Kodi** (such
+frames are rejected; immersive audio is still not supported), and ATSC 3.0's
+subtitle stream (STPP) no longer shows up as a phantom 0-channel audio track.
 
 ## Known limitations
 
-- **Surround channels coded parametrically (A-CPL) are not rebuilt.** Much 5.1
-  on ATSC 3.0 is sent as left, right, center and LFE, with the surrounds
-  described by parameters for the receiver to reconstruct. The decoder reads
-  those parameters but does not reconstruct the surrounds, so in such streams
-  the two surround channels are silent. (The 5.1 stations tested here all use
-  it.)
-- **A-SPX (the high-frequency extension) is applied only to mono and
-  stereo**, so 5.1 streams that use it have a reduced top end.
-- **Immersive AC-4 (IMS, A-JOC / Atmos) is not supported** (see above).
+- **Immersive AC-4 is not supported**: IMS / A-JOC (Atmos) and channel
+  configurations with height speakers such as 5.1.4. Kodi may show such a
+  stream as "7.1"; it plays without sound.
+- **Rarer parametric-surround modes** (A-CPL in codec mode ASPX_ACPL_3, and in
+  7.1) are not done yet: no broadcast or test material seen so far uses them.
 - Windows 64-bit only.
 
 ## Where the code is
@@ -55,11 +64,12 @@ channel 4.
 The AC-4 support is one FFmpeg patch,
 [`patches/0006-ffmpeg-ac4-decoder.patch`](patches/0006-ffmpeg-ac4-decoder.patch),
 applied to the FFmpeg 6.0.1 that Kodi 21.3 builds. It contains Paul B Mahol's
-AC-4 decoder and raw AC-4 demuxer, ported from the FFmpeg 4.3 tree in
-[ferrellsl/ffmpeg-ac4](https://github.com/ferrellsl/ffmpeg-ac4) to the FFmpeg
-6.0 API, with the fixes above, and the hooks that make FFmpeg find AC-4 in
-MPEG-TS and MP4. Kodi itself is unchanged: tag `21.3-Omega` of
-[xbmc/xbmc](https://github.com/xbmc/xbmc).
+AC-4 decoder and raw AC-4 demuxer, ported to the FFmpeg 6.0 API, with the
+fixes above, and the hooks that make FFmpeg find AC-4 in MPEG-TS and MP4. The
+FFmpeg tree it comes from is the branch
+[`ffmpeg-6.0.1`](https://github.com/ferrellsl/ffmpeg-ac4/tree/ffmpeg-6.0.1) of
+[ferrellsl/ffmpeg-ac4](https://github.com/ferrellsl/ffmpeg-ac4). Kodi itself
+is unchanged: tag `21.3-Omega` of [xbmc/xbmc](https://github.com/xbmc/xbmc).
 
 ## Building it yourself
 
@@ -81,8 +91,15 @@ BuildSetup.bat nobinaryaddons noprompt
 
 Kodi's FFmpeg build (`make-mingwlibs.bat`) applies every `*-ffmpeg-*.patch` in
 that folder, so the AC-4 patch goes in with Kodi's own. It opens a separate
-MSYS2 window that waits for a key press when it finishes. The installer ends up
-in `C:\Kodi-AC4\kodi\project\Win32BuildSetup`.
+MSYS2 window that waits for a key press when it finishes (`make-mingwlibs.bat
+noprompt sh` runs it in the same window instead). The installer ends up in
+`C:\Kodi-AC4\kodi\project\Win32BuildSetup`.
+
+**Rebuilding with a newer patch:** Kodi rebuilds FFmpeg only when its own
+build scripts change, and unpacks FFmpeg only once. Delete
+`project\BuildDependencies\build\src\ffmpeg-6.0.1` and
+`project\BuildDependencies\mingwlibs\x64\.last_success_revision` first, then run
+`make-mingwlibs.bat` and `BuildSetup.bat` again.
 
 `kodi-step.bat` runs one of those steps (for example
 `kodi-step.bat make-mingwlibs.bat`) from any shell. It's only needed where the
