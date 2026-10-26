@@ -8,6 +8,44 @@ can't decode AC-4, so NextGen channels play without sound.
 (`Kodi-21.3-AC4-x64-setup.exe`). It installs like the official Kodi 21.3 and
 replaces an existing Kodi 21 installation; your settings and library are kept.
 
+## Before you start: live TV needs a back end
+
+This build adds an audio decoder to Kodi; it doesn't add a TV tuner. Kodi
+plays ATSC 3.0 recordings and files on its own, but for **live TV** it needs
+a PVR back end: a separate program that drives your tuner and hands the
+channels to Kodi.
+
+This build has been used with [NextPVR](https://www.nextpvr.com/) as the back
+end and an HDHomeRun ATSC 3.0 tuner:
+
+1. Install NextPVR (on the same PC or another one on your network), add your
+   tuner in its settings, scan for channels, and check that a channel plays in
+   NextPVR's own web player.
+2. In Kodi, install the NextPVR client: **Add-ons > Install from repository >
+   Kodi Add-on repository > PVR clients > NextPVR PVR Client**.
+3. In the client's settings, enter the address of the PC running NextPVR
+   (port 8866 by default) and its PIN, then restart Kodi. The channels appear
+   under **TV**.
+
+You'll need to be comfortable setting up NextPVR and Kodi's PVR add-ons
+yourself. NextPVR's [documentation](https://github.com/sub3/NextPVR/wiki) and
+[forum](https://forums.nextpvr.com/) cover the back end; Kodi's
+[wiki](https://kodi.wiki/view/PVR) covers live TV in Kodi.
+
+## Support
+
+This build is shared as-is, for anyone it's useful to. I can't help with
+installing or configuring Kodi, NextPVR, tuners, skins or add-ons: for those,
+please use the [Kodi forum](https://forum.kodi.tv/) or the
+[NextPVR forum](https://forums.nextpvr.com/). As an unofficial build, it isn't
+supported by the Kodi team either, so please don't report problems with it to
+them.
+
+Problems with **AC-4 audio itself** (no sound, wrong channels, distortion on a
+channel that plays fine elsewhere) are welcome as
+[GitHub issues](../../issues): say which channel or file, and attach a short
+recording if you can.
+
 ## What it plays
 
 - AC-4 in MPEG-TS (ATSC 3.0 recordings and live TV, for example from an
