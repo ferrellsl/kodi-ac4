@@ -12,14 +12,58 @@ NextGen channels play without sound.
   library are kept.
 - **Android:** `Kodi-21.3-AC4-arm64.apk`, for 64-bit ARM devices (nearly all
   phones and tablets from the last several years) with Android 5.0 or later.
-  It installs as a separate app beside a Kodi from the Play Store (package
-  `org.xbmc.kodiac4`), with its own settings, so you can keep both. Its icon
-  is also labeled "Kodi". To install it, open the APK on the device and allow
-  installing apps from that source when Android asks. Google Play Protect may
-  warn that it's from an unknown developer: choose **Install anyway**. It
-  isn't from the Play Store, so it doesn't update itself: install a newer APK
-  over it. It won't install on devices that run only 32-bit apps, which
-  includes many Fire TV sticks and older Android TV boxes.
+  See [Installing on Android](#installing-on-android) below.
+
+## Installing on Android
+
+The APK installs as a separate app beside a Kodi from the Play Store (package
+`org.xbmc.kodiac4`), with its own settings and add-ons, so you can keep both.
+Its icon is also labeled "Kodi"; in Android's app list (Settings > Apps) the
+two can be told apart by their package names.
+
+1. **Download the APK on the phone or tablet.** Open the
+   [Releases](../../releases) page in the device's browser and tap
+   `Kodi-21.3-AC4-arm64.apk`. (Or download it on a PC and copy it over USB, or
+   through a cloud drive, to the device's Downloads folder.)
+2. **Open it.** Tap the download when it finishes, or open it from the Files
+   app (Downloads).
+3. **Allow the install.** The first time, Android says that, for your
+   security, it can't install unknown apps from this source. Tap
+   **Settings**, turn on **Allow from this source** for the browser or Files
+   app you opened it with, and go back. (On Android 7 and older, the switch
+   is **Unknown sources** under Settings > Security.)
+4. **Tap Install.** If Google Play Protect warns that the app is from an
+   unknown developer, or offers to scan it, choose **Install anyway**. Every
+   app from outside the Play Store gets this warning.
+5. **Open Kodi** and let it finish its first-run setup.
+6. **Live TV:** set up your PVR back end's client add-on, as described in
+   [Before you start](#before-you-start-live-tv-needs-a-back-end) below. On
+   your home network, or through a VPN to it, the back end's local address
+   works the same as at home.
+
+To check that AC-4 works: play an ATSC 3.0 channel, open the player's info
+(the "i" button, or tap the screen and choose the info icon), and look for
+**AC-4** as the audio codec.
+
+**Android TV and Google TV:** these have no browser for downloading files.
+Use an app such as **Downloader** (from the Play Store) to fetch the APK from
+the Releases page, and allow it to install unknown apps when asked; or install
+it from a PC with `adb install Kodi-21.3-AC4-arm64.apk` with developer
+options and USB or network debugging turned on.
+
+**Updating:** the app doesn't update itself, since it isn't from the Play
+Store. Install a newer APK the same way; it replaces the old one and keeps
+your settings.
+
+**Won't install?** "App not installed" or "There was a problem parsing the
+package" usually means a 32-bit-only device: many Fire TV sticks and older
+Android TV boxes run only 32-bit apps, and this build is 64-bit. An app such
+as CPU-Z (System tab, "Kernel Architecture") shows whether a device runs
+64-bit (aarch64 / arm64-v8a) apps.
+
+**Removing it:** Settings > Apps > Kodi (the one whose package is
+`org.xbmc.kodiac4`) > Uninstall. This removes its settings too; the Play Store
+Kodi isn't touched.
 
 ## Before you start: live TV needs a back end
 
