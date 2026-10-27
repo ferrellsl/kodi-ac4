@@ -1,12 +1,25 @@
 # Kodi 21.3 "Omega" with AC-4 audio
 
-Kodi 21.3 for Windows (64-bit) that plays **AC-4 audio**, the Dolby format used by
-ATSC 3.0 ("NextGen TV") broadcasts, some DVB services and streaming. Stock Kodi
-can't decode AC-4, so NextGen channels play without sound.
+Kodi 21.3 for Windows (64-bit) and Android (64-bit ARM phones and tablets) that
+plays **AC-4 audio**, the Dolby format used by ATSC 3.0 ("NextGen TV")
+broadcasts, some DVB services and streaming. Stock Kodi can't decode AC-4, so
+NextGen channels play without sound.
 
-**Download:** the installer is on the [Releases](../../releases) page
-(`Kodi-21.3-AC4-x64-setup.exe`). It installs like the official Kodi 21.3 and
-replaces an existing Kodi 21 installation; your settings and library are kept.
+**Download** from the [Releases](../../releases) page:
+
+- **Windows:** `Kodi-21.3-AC4-x64-setup.exe`. It installs like the official
+  Kodi 21.3 and replaces an existing Kodi 21 installation; your settings and
+  library are kept.
+- **Android:** `Kodi-21.3-AC4-arm64.apk`, for 64-bit ARM devices (nearly all
+  phones and tablets from the last several years) with Android 5.0 or later.
+  It installs as a separate app beside a Kodi from the Play Store (package
+  `org.xbmc.kodiac4`), with its own settings, so you can keep both. Its icon
+  is also labeled "Kodi". To install it, open the APK on the device and allow
+  installing apps from that source when Android asks. Google Play Protect may
+  warn that it's from an unknown developer: choose **Install anyway**. It
+  isn't from the Play Store, so it doesn't update itself: install a newer APK
+  over it. It won't install on devices that run only 32-bit apps, which
+  includes many Fire TV sticks and older Android TV boxes.
 
 ## Before you start: live TV needs a back end
 
@@ -103,7 +116,7 @@ subtitle stream (STPP) no longer shows up as a phantom 0-channel audio track.
   stream as "7.1"; it plays without sound.
 - **Rarer parametric-surround modes** (A-CPL in codec mode ASPX_ACPL_3, and in
   7.1) are not done yet: no broadcast or test material seen so far uses them.
-- Windows 64-bit only.
+- Windows 64-bit and Android 64-bit ARM only.
 
 ## Where the code is
 
@@ -147,6 +160,21 @@ build scripts change, and unpacks FFmpeg only once. Delete
 `project\BuildDependencies\build\src\ffmpeg-6.0.1` and
 `project\BuildDependencies\mingwlibs\x64\.last_success_revision` first, then run
 `make-mingwlibs.bat` and `BuildSetup.bat` again.
+
+### Android
+
+[`android/build-android.sh`](android/build-android.sh) builds the Android APK
+on Linux (tested on Ubuntu 22.04, also under WSL2). It needs what Kodi's
+[Android build instructions](https://github.com/xbmc/xbmc/blob/21.3-Omega/docs/README.Android.md)
+list: the packages named at the top of the script (with Java 17), and the
+Android command-line tools with NDK r21e (`ndk;21.4.7075529`), the NDK Kodi 21
+is released with. The script clones Kodi 21.3, adds the AC-4 patch to Kodi's
+FFmpeg 6.0.1 build (Kodi's Android build doesn't apply FFmpeg patches by
+itself, so it adds that step), builds the dependencies, Kodi and the APK, and
+signs it. With no signing key given, it makes one and keeps it; sign later
+builds with the same key, or Android won't install them over the earlier one.
+The first build takes about an hour on a 16-core PC. Settings are described at
+the top of the script.
 
 `skin/ac4.png` is the skin's AC-4 codec badge, made by `skin/make_ac4_flag.py`
 from the skin's AAC badge, with Noto Sans (SIL Open Font License);
