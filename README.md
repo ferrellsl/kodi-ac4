@@ -1,6 +1,6 @@
 # Kodi 21.3 "Omega" with AC-4 audio
 
-Kodi 21.3 for Windows (64-bit) and Android (64-bit ARM phones and tablets) that
+Kodi 21.3 for Windows (64-bit) and Android (phones, tablets, Fire TV) that
 plays **AC-4 audio**, the Dolby format used by ATSC 3.0 ("NextGen TV")
 broadcasts, some DVB services and streaming. Stock Kodi can't decode AC-4, so
 NextGen channels play without sound.
@@ -13,6 +13,10 @@ NextGen channels play without sound.
 - **Android:** `Kodi-21.3-AC4-arm64.apk`, for 64-bit ARM devices (nearly all
   phones and tablets from the last several years) with Android 5.0 or later.
   See [Installing on Android](#installing-on-android) below.
+- **Fire TV and 32-bit Android:** `Kodi-21.3-AC4-armv7.apk`, for Fire TV
+  sticks and other devices that run only 32-bit apps. See
+  [Fire TV](#fire-tv) below. (Not yet tested on a Fire TV: please report how
+  it works.)
 
 ## Installing on Android
 
@@ -51,15 +55,35 @@ the Releases page, and allow it to install unknown apps when asked; or install
 it from a PC with `adb install Kodi-21.3-AC4-arm64.apk` with developer
 options and USB or network debugging turned on.
 
+### Fire TV
+
+Fire TV sticks run only 32-bit apps: use `Kodi-21.3-AC4-armv7.apk`.
+
+1. **Install Downloader:** search for "Downloader" (by AFTVnews) in the Fire
+   TV's app store and install it.
+2. **Turn on Developer options** if they aren't showing: Settings > My Fire
+   TV > About, select the device's name seven times, until it says you're a
+   developer.
+3. **Allow Downloader to install apps:** Settings > My Fire TV > Developer
+   options > Install unknown apps > Downloader > On.
+4. **Download and install:** in Downloader, enter
+   `https://github.com/ferrellsl/kodi-ac4/releases/download/v21.3-ac4.2/Kodi-21.3-AC4-armv7.apk`
+   and choose **Install** when it finishes. Afterwards Downloader offers to
+   delete the APK, which saves space; Kodi stays installed.
+
+Kodi then appears under Your Apps & Channels (the square icon on the home
+screen).
+
 **Updating:** the app doesn't update itself, since it isn't from the Play
 Store. Install a newer APK the same way; it replaces the old one and keeps
 your settings.
 
 **Won't install?** "App not installed" or "There was a problem parsing the
-package" usually means a 32-bit-only device: many Fire TV sticks and older
-Android TV boxes run only 32-bit apps, and this build is 64-bit. An app such
-as CPU-Z (System tab, "Kernel Architecture") shows whether a device runs
-64-bit (aarch64 / arm64-v8a) apps.
+package" usually means the wrong one of the two APKs. Fire TV sticks and many
+older Android TV boxes run only 32-bit apps: use `Kodi-21.3-AC4-armv7.apk` on
+those. Some recent phones run only 64-bit apps: use `Kodi-21.3-AC4-arm64.apk`.
+An app such as CPU-Z (System tab, "Kernel Architecture") shows which a device
+runs: aarch64 / arm64-v8a is 64-bit, armv7 / armeabi-v7a is 32-bit.
 
 **Removing it:** Settings > Apps > Kodi (the one whose package is
 `org.xbmc.kodiac4`) > Uninstall. This removes its settings too; the Play Store
@@ -160,7 +184,7 @@ subtitle stream (STPP) no longer shows up as a phantom 0-channel audio track.
   stream as "7.1"; it plays without sound.
 - **Rarer parametric-surround modes** (A-CPL in codec mode ASPX_ACPL_3, and in
   7.1) are not done yet: no broadcast or test material seen so far uses them.
-- Windows 64-bit and Android 64-bit ARM only.
+- Windows 64-bit and Android ARM (64- and 32-bit) only.
 
 ## Where the code is
 
@@ -217,8 +241,8 @@ FFmpeg 6.0.1 build (Kodi's Android build doesn't apply FFmpeg patches by
 itself, so it adds that step), builds the dependencies, Kodi and the APK, and
 signs it. With no signing key given, it makes one and keeps it; sign later
 builds with the same key, or Android won't install them over the earlier one.
-The first build takes about an hour on a 16-core PC. Settings are described at
-the top of the script.
+The first build takes about an hour on a 16-core PC. `ARCH=arm` builds the
+32-bit APK for Fire TV. Settings are described at the top of the script.
 
 `skin/ac4.png` is the skin's AC-4 codec badge, made by `skin/make_ac4_flag.py`
 from the skin's AAC badge, with Noto Sans (SIL Open Font License);
