@@ -1,6 +1,7 @@
 # Kodi 21.3 "Omega" with AC-4 audio
 
-Kodi 21.3 for Windows (64-bit) and Android (phones, tablets, Fire TV) that
+Kodi 21.3 for Windows (64-bit), Linux (64-bit) and Android (phones, tablets,
+Fire TV) that
 plays **AC-4 audio**, the Dolby format used by ATSC 3.0 ("NextGen TV")
 broadcasts, some DVB services and streaming. Stock Kodi can't decode AC-4, so
 NextGen channels play without sound.
@@ -17,6 +18,8 @@ NextGen channels play without sound.
   sticks and other devices that run only 32-bit apps. See
   [Fire TV](#fire-tv) below. (Not yet tested on a Fire TV: please report how
   it works.)
+- **Linux:** `Kodi-21.3-AC4-x86_64.AppImage`, for 64-bit PCs with a
+  distribution from 2022 or later. See [Linux](#linux) below.
 
 ## Installing on Android
 
@@ -88,6 +91,36 @@ runs: aarch64 / arm64-v8a is 64-bit, armv7 / armeabi-v7a is 32-bit.
 **Removing it:** Settings > Apps > Kodi (the one whose package is
 `org.xbmc.kodiac4`) > Uninstall. This removes its settings too; the Play Store
 Kodi isn't touched.
+
+## Linux
+
+`Kodi-21.3-AC4-x86_64.AppImage` is the whole of Kodi in one file: nothing is
+installed, and it runs on most 64-bit distributions from 2022 or later (it
+needs glibc 2.35 or newer: Ubuntu 22.04, Linux Mint 21, Debian 12, Fedora 36
+and their successors).
+
+1. Download it from the [Releases](../../releases) page.
+2. Make it executable: right-click it > Properties > Permissions > "Allow
+   executing file as program", or `chmod +x Kodi-21.3-AC4-x86_64.AppImage`.
+3. Double-click it, or run `./Kodi-21.3-AC4-x86_64.AppImage`.
+
+If it doesn't start and says something about FUSE, install your
+distribution's FUSE 2 package (Ubuntu 22.04: `sudo apt install libfuse2`;
+Ubuntu 24.04: `sudo apt install libfuse2t64`), or run it with
+`--appimage-extract-and-run` after its name.
+
+- **Its settings are kept in `~/.kodi-ac4`**, not `~/.kodi`, so it doesn't mix
+  with a Kodi installed from your distribution. To have it use `~/.kodi`
+  instead, start it with `KODI_DATA=~/.kodi`.
+- **PVR clients are included**, because Kodi's add-on repository has none for
+  Linux (distributions package them): NextPVR, TVHeadend, IPTV Simple Client
+  and HDHomeRun, plus InputStream Adaptive and the joystick add-on. Enable the
+  one you use under **Add-ons > My add-ons > PVR clients**.
+- It uses the X11 display system; on a Wayland desktop it runs through
+  XWayland, as most X11 programs do.
+
+Tested under WSL2 (Ubuntu 22.04): AC-4 5.1 from an ATSC 3.0 recording plays,
+and add-ons install. Not yet tested on a Linux PC: please report how it works.
 
 ## Before you start: live TV needs a back end
 
@@ -184,7 +217,7 @@ subtitle stream (STPP) no longer shows up as a phantom 0-channel audio track.
   stream as "7.1"; it plays without sound.
 - **Rarer parametric-surround modes** (A-CPL in codec mode ASPX_ACPL_3, and in
   7.1) are not done yet: no broadcast or test material seen so far uses them.
-- Windows 64-bit and Android ARM (64- and 32-bit) only.
+- Windows 64-bit, Linux 64-bit (x86) and Android ARM (64- and 32-bit) only.
 
 ## Where the code is
 
@@ -243,6 +276,16 @@ signs it. With no signing key given, it makes one and keeps it; sign later
 builds with the same key, or Android won't install them over the earlier one.
 The first build takes about an hour on a 16-core PC. `ARCH=arm` builds the
 32-bit APK for Fire TV. Settings are described at the top of the script.
+
+### Linux
+
+[`linux/build-appimage.sh`](linux/build-appimage.sh) builds the AppImage on
+Ubuntu 22.04 (also under WSL2), after the build dependencies listed in Kodi's
+[Ubuntu build instructions](https://github.com/xbmc/xbmc/blob/21.3-Omega/docs/README.Ubuntu.md)
+(section 3.2) and the few more named at the top of the script. It clones Kodi
+21.3, adds a step to Kodi's internal FFmpeg build that applies the AC-4 patch,
+builds Kodi (X11, OpenGL) and the PVR add-ons, adds Python's standard library
+and packages it all with linuxdeploy. About 40 minutes on a 16-core PC.
 
 `skin/ac4.png` is the skin's AC-4 codec badge, made by `skin/make_ac4_flag.py`
 from the skin's AAC badge, with Noto Sans (SIL Open Font License);
