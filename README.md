@@ -19,7 +19,9 @@ NextGen channels play without sound.
   [Fire TV](#fire-tv) below. (Not yet tested on a Fire TV: please report how
   it works.)
 - **Linux:** `Kodi-21.3-AC4-x86_64.AppImage`, for 64-bit PCs with a
-  distribution from 2022 or later. See [Linux](#linux) below.
+  distribution from 2022 or later. See [Linux](#linux) below. (So far tested
+  only under WSL on Windows, not on real Linux hardware: please report how it
+  works.)
 
 ## Installing on Android
 
@@ -119,8 +121,13 @@ Ubuntu 24.04: `sudo apt install libfuse2t64`), or run it with
 - It uses the X11 display system; on a Wayland desktop it runs through
   XWayland, as most X11 programs do.
 
-Tested under WSL2 (Ubuntu 22.04): AC-4 5.1 from an ATSC 3.0 recording plays,
-and add-ons install. Not yet tested on a Linux PC: please report how it works.
+**So far this build has been tested only under WSL** (Windows Subsystem for
+Linux, Ubuntu 22.04), **not on real Linux hardware**: there, AC-4 5.1 from an
+ATSC 3.0 recording plays, Python works and add-ons install, using software
+rendering (WSL's GPU drivers can't run Kodi). How it does with a real
+graphics card and sound hardware is still unknown: please report how it works
+for you, with your distribution and graphics card, in a
+[GitHub issue](../../issues).
 
 ## Before you start: live TV needs a back end
 
