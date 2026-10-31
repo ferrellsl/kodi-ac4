@@ -72,7 +72,7 @@ Fire TV sticks run only 32-bit apps: use `Kodi-21.3-AC4-armv7.apk`.
 3. **Allow Downloader to install apps:** Settings > My Fire TV > Developer
    options > Install unknown apps > Downloader > On.
 4. **Download and install:** in Downloader, enter
-   `https://github.com/ferrellsl/kodi-ac4/releases/download/v21.3-ac4.2/Kodi-21.3-AC4-armv7.apk`
+   `https://github.com/ferrellsl/kodi-ac4/releases/download/v21.3-ac4.3/Kodi-21.3-AC4-armv7.apk`
    and choose **Install** when it finishes. Afterwards Downloader offers to
    delete the APK, which saves space; Kodi stays installed.
 
@@ -171,10 +171,29 @@ recording if you can.
 
 - AC-4 in MPEG-TS (ATSC 3.0 recordings and live TV, for example from an
   HDHomeRun), in MP4, and raw `.ac4` files.
+- 5.1.4 Atmos broadcasts (channel-based), downmixed to 5.1 (new, see below).
 - Mono, stereo and 5.1 AC-4, including 5.1 with parametric surrounds (A-CPL)
   and the high-frequency extension (A-SPX), as ATSC 3.0 broadcasters send it.
 - Tested on stereo and 5.1 ATSC 3.0 broadcasts recorded from an HDHomeRun, and
   checked against Dolby's own decode of its test material (below).
+
+## New in the third release (v21.3-ac4.3)
+
+- **5.1.4 Atmos broadcasts now play.** Channel-based immersive AC-4 (5.1.4, as
+  some ATSC 3.0 stations send it) used to play without sound. It is now decoded
+  and downmixed to 5.1 by the AC-4 specification's rendering rules. Kodi gets
+  5.1; there is no height output.
+- **Regular stereo and 5.1 are unchanged:** bit-identical to the previous
+  release on the test recordings.
+
+How it was checked: a real 5.1.4 broadcast recording decodes from start to end
+without errors. On Dolby's 5.1.4 test clip, the 5.1 output correlates 0.99 on
+the fronts, 0.95-0.97 on center, LFE and surrounds with Dolby's own DD+ 5.1 of
+the same program. The heights have had sanity checks only, as no reference
+5.1.4 decode is available, and **this has not yet been heard on a live Atmos
+station**, because none broadcasts in the developer's area. Reports from
+markets with Atmos are welcome: please open an issue with your station and
+what you hear.
 
 ## New in the second release (v21.3-ac4.2)
 
@@ -213,15 +232,15 @@ the LFE (subwoofer) channel came out of the right surround speaker, and the
 subwoofer got a surround channel. The decoder now puts the LFE fourth, where
 FFmpeg and Kodi expect it (front left, front right, center, LFE, surrounds).
 
-Also since the first release: **immersive AC-4 no longer crashes Kodi** (such
-frames are rejected; immersive audio is still not supported), and ATSC 3.0's
+Also since the first release: **immersive AC-4 no longer crashes Kodi**, and ATSC 3.0's
 subtitle stream (STPP) no longer shows up as a phantom 0-channel audio track.
 
 ## Known limitations
 
-- **Immersive AC-4 is not supported**: IMS / A-JOC (Atmos) and channel
-  configurations with height speakers such as 5.1.4. Kodi may show such a
-  stream as "7.1"; it plays without sound.
+- **Object-based Atmos is not supported:** IMS and A-JOC streams, and some
+  rarer modes, are rejected and play without sound; Kodi may show such a stream
+  as "7.1". 5.1.4 and 7.1.4 channel-based streams play as 5.1; 7.1.4 with real
+  back channels is implemented but no stream has tested it yet.
 - **Rarer parametric-surround modes** (A-CPL in codec mode ASPX_ACPL_3, and in
   7.1) are not done yet: no broadcast or test material seen so far uses them.
 - Windows 64-bit, Linux 64-bit (x86) and Android ARM (64- and 32-bit) only.
