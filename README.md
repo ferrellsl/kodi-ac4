@@ -72,7 +72,7 @@ Fire TV sticks run only 32-bit apps: use `Kodi-21.3-AC4-armv7.apk`.
 3. **Allow Downloader to install apps:** Settings > My Fire TV > Developer
    options > Install unknown apps > Downloader > On.
 4. **Download and install:** in Downloader, enter
-   `https://github.com/ferrellsl/kodi-ac4/releases/download/v21.3-ac4.3/Kodi-21.3-AC4-armv7.apk`
+   `https://github.com/ferrellsl/kodi-ac4/releases/download/v21.3-ac4.4/Kodi-21.3-AC4-armv7.apk`
    and choose **Install** when it finishes. Afterwards Downloader offers to
    delete the APK, which saves space; Kodi stays installed.
 
@@ -176,6 +176,21 @@ recording if you can.
   and the high-frequency extension (A-SPX), as ATSC 3.0 broadcasters send it.
 - Tested on stereo and 5.1 ATSC 3.0 broadcasts recorded from an HDHomeRun, and
   checked against Dolby's own decode of its test material (below).
+
+## New in the fourth release (v21.3-ac4.4)
+
+- **Clearer high frequencies on all AC-4 audio.** Everything above the point
+  where AC-4 stops coding audio directly and rebuilds it (A-SPX, typically
+  about 10 to 14 kHz) came out too low and too noisy. The damage was worst on
+  speech, so dialog in the center channel lost its clarity, and worst of all on
+  5.1.4 Atmos. Several errors in the original decoder caused this; they are
+  fixed. Audio below that point is unchanged.
+
+How it was checked: on Dolby's 5.1.4 test clip, the center channel from 8 to 16
+kHz was 23 to 27 dB below Dolby's own DD+ decode of the same program. It is now
+within about 0 to 9 dB, depending on the band. Left and right are about 2 dB
+closer on average. Dips of a few dB remain. 5.1 had less to gain, and is close
+to its earlier result. Above 12 kHz, stereo has no reference to compare with.
 
 ## New in the third release (v21.3-ac4.3)
 
