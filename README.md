@@ -142,15 +142,19 @@ channels to Kodi.
 **With an HDHomeRun tuner, you may not need a separate back end.** Every download
 includes [Direct Tuner PVR](https://github.com/ferrellsl/Direct-Tuner-PVR),
 a pre-release add-on that gives you live TV, a guide, timeshift and recording,
-with no server and no SiliconDust subscription. Recordings only run while Kodi is
-open. To turn it on, go to **Add-ons > My add-ons > PVR clients > Direct Tuner
-PVR > Enable**, then disable any other PVR client you use. The add-on's README
+with no server and no SiliconDust subscription. On its own it records only while
+Kodi is open. To turn it on, go to **Add-ons > My add-ons > PVR clients > Direct
+Tuner PVR > Enable**, then disable any other PVR client you use. The add-on's README
 covers its settings. On Linux and Android it has been tested less than on Windows:
 see the release notes.
 
-For recording while Kodi is closed, or on other systems, this build has also been
-used with [NextPVR](https://www.nextpvr.com/) as the back end and an HDHomeRun
-ATSC 3.0 tuner:
+To record while Kodi is closed, and share one set of timers, recordings and tuners
+between every Kodi in the house, also install
+[Direct Tuner Recorder](https://github.com/ferrellsl/Direct-Tuner-Recorder) on one
+always-on Windows computer. Each Kodi finds it by itself.
+
+This build has also been used with [NextPVR](https://www.nextpvr.com/) as the back
+end and an HDHomeRun ATSC 3.0 tuner:
 
 1. Install NextPVR (on the same PC or another one on your network), add your
    tuner in its settings, scan for channels, and check that a channel plays in
@@ -189,6 +193,20 @@ recording if you can.
   and the high-frequency extension (A-SPX), as ATSC 3.0 broadcasters send it.
 - Tested on stereo and 5.1 ATSC 3.0 broadcasts recorded from an HDHomeRun, and
   checked against Dolby's own decode of its test material (below).
+
+## New in the seventh release (v21.3-ac4.7)
+
+- **[Direct Tuner PVR](https://github.com/ferrellsl/Direct-Tuner-PVR) 21.2.0 is in
+  all four downloads.** It works with
+  [Direct Tuner Recorder](https://github.com/ferrellsl/Direct-Tuner-Recorder), an
+  optional recording service for SiliconDust HDHomeRun tuners that you install on one
+  always-on Windows computer. With it, recordings happen whether or not Kodi is
+  running, and every Kodi in the house shares the timers, recordings and tuners.
+  Without it, the add-on works as before.
+- Tested on Windows in real use, with and without the recorder. The Android and Linux
+  builds were checked for the add-on and the signing key but not yet run on a device.
+- Kodi and the AC-4 decoder are the same as in v21.3-ac4.6. The APKs are signed with
+  the same key, so they install over earlier ones.
 
 ## New in the sixth release (v21.3-ac4.6)
 
