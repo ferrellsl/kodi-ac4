@@ -56,6 +56,19 @@ make -j"$(nproc)"
 cd "$WORK/kodi"
 make -j"$(nproc)" -C tools/depends/target/binary-addons ADDONS="peripheral.joystick"
 
+# Direct Tuner PVR (off until enabled in Kodi), from $DIRECTTUNER or its GitHub repository. Kodi's
+# "make apk" packs every add-on it finds in the depends prefix.
+if [ -z "$DIRECTTUNER" ]; then
+  [ -d "$WORK/Direct-Tuner-PVR" ] || git clone --depth 1 https://github.com/ferrellsl/Direct-Tuner-PVR "$WORK/Direct-Tuner-PVR"
+  DIRECTTUNER=$WORK/Direct-Tuner-PVR
+fi
+DEPENDS=$WORK/xbmc-depends/$HOST-21-release
+cmake -S "$DIRECTTUNER" -B "$WORK/directtuner-build-$HOST" -G Ninja -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_TOOLCHAIN_FILE="$DEPENDS/share/Toolchain.cmake" -DCMAKE_INSTALL_PREFIX="$DEPENDS" \
+  -DKODI_INCLUDE_DIR="$WORK/kodi/xbmc/addons/kodi-dev-kit/include"
+cmake --build "$WORK/directtuner-build-$HOST" --target pvr.directtuner
+cmake --install "$WORK/directtuner-build-$HOST"
+
 # Kodi
 mkdir -p "$BUILD" && cd "$BUILD"
 cmake "$WORK/kodi" -DCMAKE_TOOLCHAIN_FILE="$WORK/xbmc-depends/$HOST-21-release/share/Toolchain.cmake"
