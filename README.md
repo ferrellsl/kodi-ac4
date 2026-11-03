@@ -15,7 +15,8 @@ NextGen channels play without sound.
   HDHomeRun tuners, turned off until you enable it.
 - **Android:** `Kodi-21.3-AC4-arm64.apk`, for 64-bit ARM devices (nearly all
   phones and tablets from the last several years) with Android 5.0 or later.
-  See [Installing on Android](#installing-on-android) below.
+  See [Installing on Android](#installing-on-android) below. Like the other
+  downloads, it includes Direct Tuner PVR, turned off.
 - **Fire TV and 32-bit Android:** `Kodi-21.3-AC4-armv7.apk`, for Fire TV
   sticks and other devices that run only 32-bit apps. See
   [Fire TV](#fire-tv) below. (Not yet tested on a Fire TV: please report how
@@ -138,13 +139,14 @@ plays ATSC 3.0 recordings and files on its own, but for **live TV** it needs
 a PVR back end: a separate program that drives your tuner and hands the
 channels to Kodi.
 
-**On Windows with an HDHomeRun tuner, you may not need a separate back end.** The
-installer includes [Direct Tuner PVR](https://github.com/ferrellsl/Direct-Tuner-PVR),
+**With an HDHomeRun tuner, you may not need a separate back end.** Every download
+includes [Direct Tuner PVR](https://github.com/ferrellsl/Direct-Tuner-PVR),
 a pre-release add-on that gives you live TV, a guide, timeshift and recording,
 with no server and no SiliconDust subscription. Recordings only run while Kodi is
 open. To turn it on, go to **Add-ons > My add-ons > PVR clients > Direct Tuner
 PVR > Enable**, then disable any other PVR client you use. The add-on's README
-covers its settings. It doesn't run on the Android or Linux builds.
+covers its settings. On Linux and Android it has been tested less than on Windows:
+see the release notes.
 
 For recording while Kodi is closed, or on other systems, this build has also been
 used with [NextPVR](https://www.nextpvr.com/) as the back end and an HDHomeRun
@@ -187,6 +189,21 @@ recording if you can.
   and the high-frequency extension (A-SPX), as ATSC 3.0 broadcasters send it.
 - Tested on stereo and 5.1 ATSC 3.0 broadcasts recorded from an HDHomeRun, and
   checked against Dolby's own decode of its test material (below).
+
+## New in the sixth release (v21.3-ac4.6)
+
+- **[Direct Tuner PVR](https://github.com/ferrellsl/Direct-Tuner-PVR) 21.1.0 is now
+  in all four downloads**: the Windows installer, both Android APKs and the Linux
+  AppImage. It's installed but turned off everywhere, so nothing changes unless you
+  enable it.
+- How far each has been tested: Windows in real use. Linux only under WSL on
+  Windows (live TV, guide, timeshift and recording against a real tuner). Android
+  hasn't yet run on a device: the APKs were checked for the add-on and the signing
+  key, and testing on tablets comes next. Please report how it works.
+- On Android, choose a recordings folder such as `Movies` in the add-on's settings;
+  the default is Kodi's own folder, which Android deletes if Kodi is uninstalled.
+- Kodi and the AC-4 decoder are the same as in v21.3-ac4.5. The APKs are signed with
+  the same key, so they install over earlier ones.
 
 ## New in the fifth release (v21.3-ac4.5)
 
