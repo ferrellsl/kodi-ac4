@@ -53,6 +53,16 @@ for a in $ADDONS; do
   [ -d "$APPDIR/usr/lib/kodi/addons/$a" ] || { echo "add-on $a was not built"; exit 1; }
 done
 
+# Direct Tuner PVR (off until enabled in Kodi), from $DIRECTTUNER or its GitHub repository
+if [ -z "$DIRECTTUNER" ]; then
+  [ -d "$WORK/Direct-Tuner-PVR" ] || git clone --depth 1 https://github.com/ferrellsl/Direct-Tuner-PVR "$WORK/Direct-Tuner-PVR"
+  DIRECTTUNER=$WORK/Direct-Tuner-PVR
+fi
+cmake -S "$DIRECTTUNER" -B "$WORK/directtuner-build" -G Ninja -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr -DKODI_INCLUDE_DIR="$WORK/kodi/xbmc/addons/kodi-dev-kit/include"
+cmake --build "$WORK/directtuner-build" --target pvr.directtuner
+DESTDIR="$APPDIR" cmake --install "$WORK/directtuner-build"
+
 # Python's standard library (Kodi embeds the system's Python)
 PY=$(python3 -c 'import sys; print("python%d.%d" % sys.version_info[:2])')
 mkdir -p "$APPDIR/usr/lib/$PY"
