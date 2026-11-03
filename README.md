@@ -10,7 +10,9 @@ NextGen channels play without sound.
 
 - **Windows:** `Kodi-21.3-AC4-x64-setup.exe`. It installs like the official
   Kodi 21.3 and replaces an existing Kodi 21 installation; your settings and
-  library are kept.
+  library are kept. It includes the
+  [Direct Tuner PVR](https://github.com/ferrellsl/Direct-Tuner-PVR) add-on for
+  HDHomeRun tuners, turned off until you enable it.
 - **Android:** `Kodi-21.3-AC4-arm64.apk`, for 64-bit ARM devices (nearly all
   phones and tablets from the last several years) with Android 5.0 or later.
   See [Installing on Android](#installing-on-android) below.
@@ -136,8 +138,17 @@ plays ATSC 3.0 recordings and files on its own, but for **live TV** it needs
 a PVR back end: a separate program that drives your tuner and hands the
 channels to Kodi.
 
-This build has been used with [NextPVR](https://www.nextpvr.com/) as the back
-end and an HDHomeRun ATSC 3.0 tuner:
+**On Windows with an HDHomeRun tuner, you may not need a separate back end.** The
+installer includes [Direct Tuner PVR](https://github.com/ferrellsl/Direct-Tuner-PVR),
+a pre-release add-on that gives you live TV, a guide, timeshift and recording,
+with no server and no SiliconDust subscription. Recordings only run while Kodi is
+open. To turn it on, go to **Add-ons > My add-ons > PVR clients > Direct Tuner
+PVR > Enable**, then disable any other PVR client you use. The add-on's README
+covers its settings. It doesn't run on the Android or Linux builds.
+
+For recording while Kodi is closed, or on other systems, this build has also been
+used with [NextPVR](https://www.nextpvr.com/) as the back end and an HDHomeRun
+ATSC 3.0 tuner:
 
 1. Install NextPVR (on the same PC or another one on your network), add your
    tuner in its settings, scan for channels, and check that a channel plays in
@@ -176,6 +187,16 @@ recording if you can.
   and the high-frequency extension (A-SPX), as ATSC 3.0 broadcasters send it.
 - Tested on stereo and 5.1 ATSC 3.0 broadcasts recorded from an HDHomeRun, and
   checked against Dolby's own decode of its test material (below).
+
+## New in the fifth release (v21.3-ac4.5)
+
+- **The Windows installer now includes
+  [Direct Tuner PVR](https://github.com/ferrellsl/Direct-Tuner-PVR)**, a
+  pre-release add-on for HDHomeRun tuners. It's installed but turned off, so
+  nothing changes unless you enable it. Its component in the installer can also
+  be unticked.
+- Kodi and the AC-4 decoder are the same as in v21.3-ac4.4, and the Android and
+  Linux builds are unchanged.
 
 ## New in the fourth release (v21.3-ac4.4)
 
